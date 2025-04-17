@@ -9,8 +9,45 @@
 # - All the other apps have their own set of instructions in each directory
 # - Good luck!
 
+
 services:
   nginx:
+    build: ./nginx
+    ports:
+      - "8080:80"
+    networks:
+      - external-net
+    depends_on:
+      - red
+      - yellow
+      - green
+
   red:
+    build: ./red
+    volumes:
+      - red-data:/app/data
+    networks:
+      - external-net
+
   yellow:
+    build: ./yellow
+    volumes:
+      - yellow-data:/app/data
+    networks:
+      - external-net
+
   green:
+    build: ./green
+    volumes:
+      - green-data:/app/data
+    networks:
+      - external-net
+
+volumes:
+  red-data:
+  yellow-data:
+  green-data:
+
+networks:
+  external-net:
+    external: true
